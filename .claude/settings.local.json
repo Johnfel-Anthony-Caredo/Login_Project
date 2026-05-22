@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\jhepo\\\\Desktop\\\\cyber\" -Depth 1)",
+      "Bash(Select-Object Name, PSIsContainer, Length)",
+      "Bash(cmd.exe *)",
+      "Bash(Get-ChildItem -Recurse -File C:\\\\Users\\\\jhepo\\\\Desktop\\\\cyber)",
+      "Bash(Select-Object -ExpandProperty FullName)"
+    ]
+  }
+}

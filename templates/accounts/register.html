@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            /* Solid black background */
+            background-color: #000000;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .auth-container {
+            position: relative;
+            z-index: 1;
+            /* Monochromatic glassmorphism */
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        .auth-container h2 {
+            font-size: 26px;
+            font-weight: 300;
+            margin-bottom: 30px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #ffffff;
+        }
+
+        .status-message {
+            margin-bottom: 25px;
+            padding: 12px;
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+            font-weight: 600;
+            border-radius: 6px;
+            letter-spacing: 1px;
+        }
+
+        .status-message.success {
+            border: 2px solid #00ff00;
+        }
+
+        .status-message.error {
+            border: 2px solid #ff0000;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #ffffff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: #ffffff;
+            border: none;
+            border-radius: 6px;
+            color: #000000;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .btn-submit:hover {
+            background: #e6e6e6;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .auth-links {
+            margin-top: 30px;
+            font-size: 13px;
+        }
+
+        .auth-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .auth-links a:hover {
+            color: #ffffff;
+        }
+
+        .errorlist {
+            list-style: none;
+            margin: 8px 0 0 0;
+            padding: 0;
+            color: #ff8a8a;
+            font-size: 12px;
+        }
+
+        .password-meter {
+            margin-top: 10px;
+        }
+
+        .password-meter.is-hidden {
+            display: none;
+        }
+
+        .meter-label {
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .meter-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .meter-fill {
+            height: 100%;
+            width: 0;
+            background: #ff3b30;
+            transition: width 0.2s ease, background 0.2s ease;
+        }
+
+        .password-rules {
+            list-style: none;
+            margin-top: 12px;
+            padding: 0;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .password-rules li {
+            margin-bottom: 6px;
+        }
+
+        .rule-valid {
+            color: #7dff7d;
+        }
+
+        .rule-invalid {
+            color: #ff8a8a;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <h2>Register</h2>
+        
+        {% if message %}
+        <div class="status-message {% if 'Successful' in message %}success{% else %}error{% endif %}">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        {% if form.errors %}
+        <div class="status-message error">
+            Please fix the errors below.
+        </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Username</label>
+                {{ form.username }}
+                {{ form.username.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}">Password</label>
+                {{ form.password }}
+                {{ form.password.errors }}
+
+                <div class="password-meter is-hidden" id="password-meter">
+                    <div class="meter-label">Strength: <span id="strength-text"></span></div>
+                    <div class="meter-bar">
+                        <div class="meter-fill" id="strength-bar"></div>
+                    </div>
+                </div>
+
+                <ul class="password-rules">
+                    <li id="rule-lower" class="rule-invalid">At least one lowercase letter</li>
+                    <li id="rule-upper" class="rule-invalid">At least one uppercase letter</li>
+                    <li id="rule-digit" class="rule-invalid">At least one digit</li>
+                    <li id="rule-symbol" class="rule-invalid">At least one symbol</li>
+                    <li id="rule-length" class="rule-invalid">Minimum 12 characters</li>
+                </ul>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.confirm_password.id_for_label }}">Confirm Password</label>
+                {{ form.confirm_password }}
+                {{ form.confirm_password.errors }}
+            </div>
+            <button type="submit" class="btn-submit">Register</button>
+        </form>
+
+        <div class="auth-links">
+            <a href="{% url 'login' %}">Login</a>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var passwordInput = document.getElementById("id_password");
+            var strengthText = document.getElementById("strength-text");
+            var strengthBar = document.getElementById("strength-bar");
+            var meter = document.getElementById("password-meter");
+            var rules = {
+                lower: document.getElementById("rule-lower"),
+                upper: document.getElementById("rule-upper"),
+                digit: document.getElementById("rule-digit"),
+                symbol: document.getElementById("rule-symbol"),
+                length: document.getElementById("rule-length"),
+            };
+
+            function updateRule(ruleElement, isValid) {
+                ruleElement.className = isValid ? "rule-valid" : "rule-invalid";
+            }
+
+            function calculateStrength(password) {
+                if (!password) {
+                    if (meter) {
+                        meter.classList.add("is-hidden");
+                    }
+                    strengthText.textContent = "";
+                    strengthBar.style.width = "0";
+                    return;
+                }
+
+                if (meter) {
+                    meter.classList.remove("is-hidden");
+                }
+
+                var hasLower = /[a-z]/.test(password);
+                var hasUpper = /[A-Z]/.test(password);
+                var hasDigit = /\d/.test(password);
+                var hasSymbol = /[^A-Za-z0-9]/.test(password);
+                var hasLength = password.length >= 12;
+
+                updateRule(rules.lower, hasLower);
+                updateRule(rules.upper, hasUpper);
+                updateRule(rules.digit, hasDigit);
+                updateRule(rules.symbol, hasSymbol);
+                updateRule(rules.length, hasLength);
+
+                var score = 0;
+                if (hasLower) score += 1;
+                if (hasUpper) score += 1;
+                if (hasDigit) score += 1;
+                if (hasSymbol) score += 1;
+                if (hasLength) score += 1;
+
+                if (score >= 5) {
+                    strengthText.textContent = "Strong";
+                    strengthBar.style.width = "100%";
+                    strengthBar.style.background = "#34c759";
+                } else if (score >= 3) {
+                    strengthText.textContent = "Medium";
+                    strengthBar.style.width = "66%";
+                    strengthBar.style.background = "#ffcc00";
+                } else {
+                    strengthText.textContent = "Weak";
+                    strengthBar.style.width = "33%";
+                    strengthBar.style.background = "#ff3b30";
+                }
+            }
+
+            if (passwordInput) {
+                passwordInput.addEventListener("input", function (event) {
+                    calculateStrength(event.target.value);
+                });
+
+                calculateStrength("");
+            }
+        })();
+    </script>
+</body>
+</html>
