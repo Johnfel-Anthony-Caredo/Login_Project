@@ -23,17 +23,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv(
     'DJANGO_SECRET_KEY',
-    'django-insecure-i9p8w)y91yr!4y_c8&-+4@5^@gygiq6tl-o3s7%&30qn6+*^qd'
+    '7dyl8a&8iatyx@hr#2+g^y$1k_3va3fp***2c)52zf%8-xr3uv'
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG', 'True').lower() == 'true'
+DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() == 'true'
 
 raw_allowed_hosts = os.getenv('DJANGO_ALLOWED_HOSTS', '')
 if raw_allowed_hosts:
     ALLOWED_HOSTS = [host.strip() for host in raw_allowed_hosts.split(',') if host.strip()]
 else:
-    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+    # Default: local dev + PythonAnywhere domain
+    ALLOWED_HOSTS = [
+        '127.0.0.1',
+        'localhost',
+        'johnfel-anthony-caredo.pythonanywhere.com',
+    ]
 
 raw_csrf_trusted = os.getenv('DJANGO_CSRF_TRUSTED_ORIGINS', '')
 if raw_csrf_trusted:
@@ -41,7 +46,9 @@ if raw_csrf_trusted:
         origin.strip() for origin in raw_csrf_trusted.split(',') if origin.strip()
     ]
 else:
-    CSRF_TRUSTED_ORIGINS = []
+    CSRF_TRUSTED_ORIGINS = [
+        'https://johnfel-anthony-caredo.pythonanywhere.com',
+    ]
 
 
 # Application definition
@@ -142,4 +149,4 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Secret constant for midterm project hashing
-PASSWORD_PEPPER = os.getenv('PASSWORD_PEPPER', 'my_secret_pepper_123')
+PASSWORD_PEPPER = os.getenv('PASSWORD_PEPPER', 'a9f2b8e1c7d3f5e0a4b2c6d8e0f1a3b5')
