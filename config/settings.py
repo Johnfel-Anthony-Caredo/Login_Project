@@ -37,7 +37,7 @@ else:
     ALLOWED_HOSTS = [
         '127.0.0.1',
         'localhost',
-        'johnfel-anthony-caredo.pythonanywhere.com',
+        'darkmatter.pythonanywhere.com',
     ]
 
 raw_csrf_trusted = os.getenv('DJANGO_CSRF_TRUSTED_ORIGINS', '')
@@ -47,7 +47,7 @@ if raw_csrf_trusted:
     ]
 else:
     CSRF_TRUSTED_ORIGINS = [
-        'https://johnfel-anthony-caredo.pythonanywhere.com',
+        'https://darkmatter.pythonanywhere.com',
     ]
 
 
